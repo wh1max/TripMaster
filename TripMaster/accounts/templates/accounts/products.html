@@ -1,0 +1,55 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body mb-3">
+            <h5>Products</h5>
+            <!-- Add Product Button -->
+            <a class="btn btn-primary mb-3" href="{% url 'add_product' %}">Add Product</a>
+
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'search_products' %}">
+                <div class="input-group mb-3">
+                    <input type="text" name="q1" class="form-control" placeholder="Search for products...">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Product Table -->
+        <div class="card card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Supplier</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if products %}
+                        {% for i in products %}
+                        <tr>
+                            <td>{{ i.categories }}</td>
+                            <td>{{ i.supplier }}</td>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.price }} Da</td>
+                            <td>
+                                <a class="btn btn-sm btn-info" href="{% url 'edit_product' i.id %}">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="{% url 'delete_product' i.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

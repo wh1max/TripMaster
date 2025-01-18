@@ -1,0 +1,104 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="container mt-5">
+    <!-- Customer Overview Section -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center text-white bg-info mb-3">
+                <div class="card-header">
+                    <h5>Total Customers</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{ total_customer }}</h3> <!-- Total Customers -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center text-white bg-success mb-3">
+                <div class="card-header">
+                    <h5>New Customers (This Month)</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{ customer_count }}</h3> <!-- New Customers -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center text-white bg-warning mb-3">
+                <div class="card-header">
+                    <h5>Returning Customers</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{ returning_customers }}</h3> <!-- Returning Customers -->
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Actions Section (Create & Search) -->
+     <div class="row mb-4">
+        <div class="col-md-6">
+            <a class="btn btn-primary" href="{% url 'create_Customer' %}">Create New Customer</a>
+        </div>
+
+        <div class="col-md-6">
+            <form method="GET" action="{% url 'search_customer' %}">
+                <div class="input-group mb-3">
+                    <input type="text" name="q" class="form-control" placeholder="Search for customers...">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer List Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Customer List</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Customer Name</th>
+                                <th>Email</th>
+                                <th>Orders</th>
+                                <th>Last Order Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customer-table-body">
+                            {% for customer in customers %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td> <!-- Customer Index -->
+                                    <td>{{ customer.name }}</td> <!-- Customer Name -->
+                                    <td>{{ customer.email }}</td> <!-- Customer Email -->
+                                    <td>{{ customer.order_count }}</td> <!-- Order Count -->
+                                    <td>
+                                        {% if customer.date_created %}
+                                            {{ customer.date_created }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'edit_customer' customer.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                        <a href="{% url 'delete_customer' customer.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
